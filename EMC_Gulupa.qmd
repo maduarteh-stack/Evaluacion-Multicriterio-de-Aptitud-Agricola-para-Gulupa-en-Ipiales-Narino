@@ -1,0 +1,743 @@
+---
+title: "Evaluación Multicriterio de Aptitud Agrícola para Gulupa (*Passiflora edulis* f. *edulis*) en Ipiales, Nariño"
+author: "Wilder Clavijo y María José Duarte H."
+date: today
+format:
+  html:
+    embed-resources: true
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    toc-title: "Contenido"
+    number-sections: true
+    theme: cosmo
+  pdf:
+    toc: true
+    number-sections: true
+
+---
+
+# Introducción
+
+El cultivo de gulupa (*Passiflora edulis* Sims) representa una oportunidad comercial a nivel nacional e internacional, consolidándose como producto de alto potencial de exportación en los últimos años (Escobar Quiñónez et al., 2024). Actualmente, es el quinto fruto más exportado en el país, siendo Colombia el principal proveedor de este producto hacia la Unión Europea (Cáceres, 2026). La mayoría de las zonas productoras se han establecido en las últimas dos décadas en diferentes departamentos, entre los que destacan Antioquia, Cundinamarca, Boyacá y Huila, reconocidos por su producción de frutas con calidad de exportación gracias a sus condiciones agroecológicas favorables (De Armas Costa et al., 2022).
+
+En este contexto, debido a la creciente demanda de este fruto en el mercado internacional, la industria agrícola ha identificado la necesidad de expandir el área cultivada de gulupa en el país (Cuspoca-Chaparro et al., 2023). Entre los departamentos con potencial para incrementar la producción se encuentra Nariño, donde se han registrado plantaciones con fines de exportación (ICA, 2019) y podrían destinarse nuevas áreas para el cultivo en diferentes municipios, como es el caso de Ipiales que presenta condiciones de temperatura, altitud y paisaje que, en general, son favorables para el desarrollo del cultivo (Ocampo y Wyckhuys, 2012).
+
+Sin embargo, al ser un cultivo semipermanente que implica una alta inversión inicial (Ocampo y Wyckhuys, 2012), determinar zonas adecuadas para las plantaciones de gulupa representa un reto importante. Por esto, es necesario realizar análisis integrales para el establecimiento del cultivo que consideren variables espaciales, climáticas, edáficas, topográficas y sociales, con el fin de apoyar la toma de decisiones informadas. Así mismo, para el caso de Ipiales, existen nicho térmicos muy variables que incluyen el corregimiento Jardín de Sucumbíos que desciende hasta los 1200 msnm, así como cañones y vertientes en los que las temperaturas son diversas, lo que resalta la importancia de evaluar de forma integral las zonas de estudio previo al establecimiento. 
+
+Para esto, el uso de las herramientas de geomática, como los Sistemas de Información Geográfica (SIG),resulta esencial para la planificación territorial de sistemas productivos agrícolas, ya que permite integrar, procesar y analizar múltiples variables espaciales facilitando la evaluación de la aptitud del territorio a diferentes escalas espaciales y temporales (Saraiva et al., 2025; Ceballos-Silva y López-Blanco 2010). Por su parte, la Evaluación Multicriterio (EMC) es una metodología de análisis espacial que permite integrar múltiples variables biofísicas y socioeconómicas en un único índice de aptitud territorial. 
+
+Diversos estudios han demostrado la utilidad de este enfoque para identificar áreas con potencial productivo a partir de la integración de variables climáticas, edáficas, topográficas, hidrológicas y de infraestructura. Investigaciones realizadas en Pakistán identificaron zonas aptas para la agricultura bajo altas presiones urbanas (Hussain et al., 2024), en México se han delimitado áreas para cultivos alternativos como el nopal optimizando suelos degradados (Ceballos-Silva y López-Blanco, 2010), en Egipto se utilizaron modelos híbridos para evaluar la aptitud para microirrigación de acuerdo a la calidad del agua y generar mapas de aptitud para trigo y maíz en áreas áridas (Abuzaid & El-Husseiny, 2022) y en Turquia, estas herramientas se han utilizado para encontrar alternativas para el crecimiento agrícola debido a planificaciones estatales (Akıncı et al., 2013). 
+
+De esta manera, se puede generar información precisa que respalde la toma de decisiones, reduciendo la incertidumbre del productor, aumentando la probabilidad de desarrollar proyectos productivos rentables y promoviendo sistemas sostenibles que hagan un uso eficiente de los recursos naturales.
+
+En este sentido, la evaluación de aptitud territorial para el cultivo de gulupa, basada en la integración de múltiples variables ambientales y socioeconómicas junto con los requerimientos agroecológicos de la especie, constituye una herramienta fundamental para orientar la expansión sostenible del cultivo en municipios con potencial productivo como Ipiales, justificando un modelo espacial preventivo para reducir los riesgos a los que se enfrenta el agricultor.
+
+# Objetivos
+
+Evaluar la aptitud territorial para el establecimiento de un sistema productivo de gulupa en el municipio de Ipiales, mediante el uso de Sistemas de Información Geográfica (SIG) y técnicas de análisis multicriterio. 
+
+* Analizar y procesar variables biofísicas y de accesibilidad mediante herramientas SIG, con el fin de generar mapas temáticos que caracterizan las condiciones del área de estudio.
+
+* Integrar las variables seleccionadas a través de un modelo de análisis multicriterio espacial, aplicando procesos de normalización y ponderación, para delimitar zonas con diferentes niveles de aptitud para el cultivo de gulupa.
+
+# Área de Estudio 
+
+El municipio de Ipiales se localiza en el sur del departamento de Nariño, en la frontera colombo-ecuatoriana (latitud ~0°50'N, longitud ~77°39'W). Se caracteriza por un relieve andino con altitudes entre 2.800 y 3.400 msnm, aunque existen vertientes y cañones que descienden hasta 1.200 msnm, condición que genera una importante variabilidad bioclimática y hace del municipio un territorio con zonas potencialmente aptas para la gulupa.
+
+![Mapa de ubicación](Mapageneral.jpg)
+
+
+# Fuentes de Datos
+
+Para la elaboración del análisis, se recopiló información geoespacial de las variables que influyen en la aptitud para el cultivo de gulupa en el área de estudio (Tabla 1). 
+
+Se utilizaron plataformas institucionales, catálogos geográficos y herramientas de datos espaciales para obtener las variables necesarias del análisis. Para la caracterización de los criterios físicos, como las variables climáticas, se utilizaron bases de datos climáticos de acceso abierto como WorldClim y nacionales como el Instituto de Hidrología, Meteorología y Estudios Ambientales (IDEAM), así como plataformas de
+análisis geoespacial como Google Earth Engine.Adicionalmente, se integraron registros provenientes de estaciones meteorológicas cercanas al área de estudio para mayor precisión y representatividad.
+
+Para la oferta edafológica se obtuvo la información de los catálogos y bases de datos del Instituto Geográfico Agustín Codazzi (IGAC). Para el análisis de accesibilidad, se tomaron capas de información vial e infraestructura de plataformas de acceso abierto como OpenStreetMap con el fin de evaluar la conectividad del territorio y su relación con las áreas
+potenciales.
+
+**Tabla 1.** Fuentes y características de las variables utilizadas para el análisis. 
+
+| Variable | Capa / Fuente | Resolución original |
+|---|---|---|
+| Temperatura promedio | WorldClim v2.1 (BIO1) / GEE | ~1 km |
+| Altitud | DEM SRTM 1-arc-second / GEE | 30 m |
+| Precipitación anual | WorldClim v2.1 (BIO12) / GEE | ~1 km |
+| Riesgo de heladas | IDEAM – Atlas Climatológico / WorldClim BIO6 | ~1 km |
+| Uso actual del suelo | IGAC – Cobertura CORINE Land Cover Colombia | 30 m |
+| Humedad Relativa | WorldClim (BIO15 proxy) / IDEAM | ~1 km |
+| Profundidad del suelo | IGAC – Estudio General de Suelos de Nariño | Vectorial |
+| Textura de suelos | IGAC – Estudio General de Suelos de Nariño | Vectorial |
+| Fertilidad natural | IGAC – Estudio General de Suelos de Nariño | Vectorial |
+| Horas sol | IDEAM – Atlas de Radiación Solar | Vectorial / Raster |
+| Acidez (pH) | SoilGrids (ISRIC) / IGAC | 250 m |
+| Geomorfología | IGAC – Mapa Geomorfológico de Colombia | Vectorial |
+| Vientos | WorldClim / IDEAM | ~1 km |
+| Evapotranspiración | WorldClim / FAO – ETo | ~1 km |
+| Paisaje | IGAC – Unidades de Paisaje | Vectorial |
+
+
+# Metodología 
+
+***Preparación y Homogenización de capas***
+
+Se reproyectaron todas las capas descritas en la Tabla 1 al sistema de coordenadas MAGNA-SIRGAS / Colombia Zona Centro-Oeste EPSG:9377 y se utilizó el límite municipal de Ipiales como máscara de recorte para todas las capas. Además, de estableció el tamaño de celda uniforme de 30 m para todo el análisis con el fin de asegurar que las capas presenten la misma extensión, resolución y SRC. Esto se comprobó con el alineamiento de rásteres en QGIS.
+
+```python
+# Remuestreo y reproyección con GDAL (Python) — todas las capas al mismo grid
+from osgeo import gdal
+import os
+
+capas_entrada = [
+    "temperatura_promedio.tif",
+    "altitud_srtm.tif",
+    "precipitacion_anual.tif",
+    "humedad_relativa.tif",
+    "horas_sol.tif",
+    "uso_actual.tif",
+    "profundidad_suelo.tif",
+    "textura_suelo.tif",
+    "fertilidad_natural.tif",
+    "vientos.tif",
+    "evapotranspiracion.tif",
+    "riesgo_heladas.tif",
+    "geomorfologia.tif",
+    "paisaje.tif",
+    "acidez_ph.tif"
+]
+
+raster_referencia = "altitud_srtm_9377.tif"  # Define la grilla de referencia
+directorio_salida = "capas_homogenizadas/"
+os.makedirs(directorio_salida, exist_ok=True)
+
+ds_ref = gdal.Open(raster_referencia)
+gt = ds_ref.GetGeoTransform()
+proj = ds_ref.GetProjection()
+cols = ds_ref.RasterXSize
+rows = ds_ref.RasterYSize
+
+for capa in capas_entrada:
+    nombre_salida = os.path.join(directorio_salida, os.path.basename(capa).replace(".tif", "_9377_30m.tif"))
+    gdal.Warp(
+        nombre_salida,
+        capa,
+        dstSRS="EPSG:9377",
+        xRes=30, yRes=30,
+        resampleAlg="bilinear",
+        outputBounds=(gt[0], gt[3] + rows * gt[5], gt[0] + cols * gt[1], gt[3])
+    )
+    print(f"Procesado: {nombre_salida}")
+
+ds_ref = None
+print("Homogenización completada.")
+```
+
+***Reclasificación por Criterio***
+
+El método implementado corresponde a la Combinación Lineal Ponderada (WLC — *Weighted Linear Combination*), en la que cada capa reclasificada se multiplica por su peso AHP y los productos se suman en la Calculadora Raster de QGIS. Los pesos fueron definidos mediante el Proceso Analítico Jerárquico (AHP) de Saaty (1980), priorizando los factores climáticos como limitantes principales para la gulupa en el altiplano nariñense. 
+
+Esta metodología funciona dado el número de variables involucradas, el control, trazabilidad y transparencia del procedimiento al realizarlo en la Calculadora Raster. 
+
+La escala de aptitud utilizada es de 1 a 4 en donde: 
+
+- **4** = Muy Apto (óptimo para la gulupa)
+- **3** = Moderadamente Apto
+- **2** = Marginalmente Apto
+- **1** = No Apto
+
+Cada raster de las capas descritas se reclasificó en esta escala previo a la combinación ponderada y siguiendo los criterios de reclasificación presentados en la Tabla 2 de acuerdo a la revisión bibliográfica realizada. 
+
+**Tabla 2.** Clasificación del grado de aptitud para cada variable. 
+
+::: {.table-responsive}
+
+| Variable | Aptitud Alta (4) | Aptitud Media (3) | Aptitud Baja (2/1) | Fuente |
+|-----------|------------------|-------------------|-------------------|----------------------|
+| Temperatura Promedio (°C) | 15 – 18 o 15 – 20 | 12 – 15 / 20 – 24 | < 10 o > 25 (Aborto floral) | (Ocampo & Wyckhuys, 2012; Pérez & Melgarejo, 2012) |
+| Altitud (msnm) | 1.700 – 2.200 | 1.400 – 1.700 / 2.200 – 2.500 | < 900  / > 2.600 | (Ocampo & Wyckhuys, 2012; Guerrero-López et al., 2012) |
+| Precipitación Anual (mm) | 1.300 – 1.800 | 900 – 1.300 / 1.800 – 2.500 | < 900 o > 2.500 | (Ocampo & Wyckhuys, 2012; Angulo, 2009) |
+| Humedad Relativa (%) | 60 – 70 o 80 – 94* | 70 – 80 | > 95 | (Angulo, 2009; Pérez & Melgarejo, 2012) |
+| Radiación Solar (h/día) | 9 – 13 | 7 – 9 | < 7 | (Ocampo & Wyckhuys, 2012; Pérez & Melgarejo, 2012) |
+| Acidez del Suelo (pH) | 6,0 – 7,0 (Óptimo 6,5) | 5,5 – 6,0 / 7,0 – 7,5 | < 5,5 o > 7,5 | (Ocampo & Wyckhuys, 2012; De-Armas-Acosta et al., 2022) |
+| Profundidad Efectiva (cm) | ≥ 60 | 50 – 60 | < 30  | (Ocampo & Wyckhuys, 2012; Angulo, 2009) |
+| Textura del Suelo | Franca, Fr-Arenosa, Fr-Arcillosa | Franco-limosa | Arcillosa | (Ocampo & Wyckhuys, 2012; Angulo, 2009) |
+| Fertilidad (Mat. Orgánica) | ≥ 5% | 3% – 5% | < 3% | (Ocampo & Wyckhuys, 2012) |
+| Vientos (km/h) | Bajos (≤ 50) | Moderados | Fuertes y constantes | (Ocampo & Wyckhuys, 2012; Guerrero-López et al., 2012) |
+| Pendiente (%) | 15% – 30% | < 15% / 30% – 100% | > 100% (45°) o inundables | (Ocampo & Wyckhuys, 2012; Angulo, 2009) |
+::: 
+ 
+***Reclasificación en QGIS***
+
+Se automatizó la reclasificación de los rasters númericos conitinuos garantizando reproducibilidad 
+
+```python
+#| label: reclasificacion_python
+#| eval: false
+
+import numpy as np
+import rasterio
+from rasterio.transform import from_origin
+import os
+
+def reclasificar_raster(ruta_entrada, ruta_salida, rangos_valores):
+    """
+    Reclasifica un raster continuo según una tabla de rangos.
+    
+    Parámetros:
+    -----------
+    ruta_entrada : str
+        Ruta al raster continuo de entrada (.tif)
+    ruta_salida : str
+        Ruta donde se guardará el raster reclasificado (.tif)
+    rangos_valores : list of tuples
+        Lista de (valor_minimo, valor_maximo, clase_asignada)
+        Ej: [(1700, 2200, 4), (2200, 2500, 3), ...]
+    """
+    with rasterio.open(ruta_entrada) as src:
+        datos = src.read(1).astype(float)
+        perfil = src.profile
+        nodata = src.nodata if src.nodata is not None else -9999
+    
+    # Inicializar con valor No Apto (1) por defecto
+    datos_rc = np.ones_like(datos, dtype=np.int16)
+    
+    # Aplicar máscara de nodata
+    mascara_nodata = (datos == nodata) | np.isnan(datos)
+    
+    # Aplicar rangos en orden (el último rango que aplique tiene prioridad)
+    for vmin, vmax, clase in rangos_valores:
+        condicion = (datos >= vmin) & (datos < vmax)
+        datos_rc[condicion] = clase
+    
+    # Restaurar nodata
+    datos_rc[mascara_nodata] = -9999
+    
+    # Guardar raster reclasificado
+    perfil.update(dtype="int16", nodata=-9999, count=1)
+    with rasterio.open(ruta_salida, "w", **perfil) as dst:
+        dst.write(datos_rc, 1)
+    
+    print(f"Reclasificado: {os.path.basename(ruta_salida)}")
+    unique, counts = np.unique(datos_rc[~mascara_nodata], return_counts=True)
+    for u, c in zip(unique, counts):
+        print(f"  Clase {u}: {c} píxeles ({c / datos_rc[~mascara_nodata].size * 100:.1f}%)")
+
+
+# -------------------------------------------------------
+# TABLAS DE RECLASIFICACIÓN (según criterios establecidos)
+# -------------------------------------------------------
+
+# Directorio de capas homogenizadas
+dir_entrada = "capas_homogenizadas/"
+dir_salida  = "capas_reclasificadas/"
+os.makedirs(dir_salida, exist_ok=True)
+
+# 1. ALTITUD (msnm)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "altitud_srtm_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_Altitud.tif",
+    rangos_valores = [
+        (0,    1400, 1),
+        (1400, 1700, 2),
+        (1700, 2200, 4),
+        (2200, 2500, 3),
+        (2500, 3000, 2),
+        (3000, 9999, 1)
+    ]
+)
+
+# 2. TEMPERATURA PROMEDIO ANUAL (°C)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "temperatura_promedio_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_Temperatura.tif",
+    rangos_valores = [
+        (0,  10, 1),
+        (10, 15, 3),
+        (15, 20, 4),   # Óptimo
+        (20, 24, 3),
+        (24, 30, 2),
+        (30, 99, 1)
+    ]
+)
+
+# 3. PRECIPITACIÓN ANUAL (mm)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "precipitacion_anual_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_Precipitacion.tif",
+    rangos_valores = [
+        (0,    800,  1),
+        (800,  1000, 2),
+        (1000, 1300, 3),
+        (1300, 1800, 4),   # Óptimo
+        (1800, 2200, 3),
+        (2200, 2500, 2),
+        (2500, 9999, 1)
+    ]
+)
+
+# 4. HUMEDAD RELATIVA (%)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "humedad_relativa_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_HumedadRelativa.tif",
+    rangos_valores = [
+        (0,  50, 1),
+        (50, 60, 3),
+        (60, 70, 4),   # Óptimo
+        (70, 80, 3),
+        (80, 100, 2)
+    ]
+)
+
+# 5. HORAS DE SOL (h/día)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "horas_sol_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_HorasSol.tif",
+    rangos_valores = [
+        (0, 5, 1),
+        (5, 7, 2),
+        (7, 9, 3),
+        (9, 13, 4),    # Óptimo
+        (13, 24, 3)
+    ]
+)
+
+# 6. EVAPOTRANSPIRACIÓN (mm/día)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "evapotranspiracion_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_Evapotranspiracion.tif",
+    rangos_valores = [
+        (0, 3, 4),     # Baja = óptimo
+        (3, 5, 3),
+        (5, 7, 2),
+        (7, 99, 1)
+    ]
+)
+
+# 7. PROFUNDIDAD EFECTIVA DEL SUELO (cm)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "profundidad_suelo_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_Profundidad.tif",
+    rangos_valores = [
+        (0,  20, 1),
+        (20, 40, 2),
+        (40, 60, 3),
+        (60, 999, 4)   # > 60 cm = óptimo
+    ]
+)
+
+# 8. VIENTOS (km/h)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "vientos_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_Vientos.tif",
+    rangos_valores = [
+        (0,  10, 4),   # Suaves = óptimo
+        (10, 20, 3),
+        (20, 40, 2),
+        (40, 50, 2),
+        (50, 999, 1)
+    ]
+)
+
+# 9. ACIDEZ (pH)
+reclasificar_raster(
+    ruta_entrada = dir_entrada + "acidez_ph_9377_30m.tif",
+    ruta_salida  = dir_salida  + "RC_pH.tif",
+    rangos_valores = [
+        (0,   5.0, 1),
+        (5.0, 5.5, 2),
+        (5.5, 6.0, 3),
+        (6.0, 7.0, 4),   # Óptimo
+        (7.0, 7.5, 3),
+        (7.5, 14,  1)
+    ]
+)
+
+print("\nReclasificación de rasters continuos completada.")
+```
+
+Para la reclasificación de las capas vectoriales que contenían categorías como las capas de Textura, Fertilidad, Uso Actual, Geomorfología y Paisaje derivadas del IGAC se editó la tabla de atributos añadiendo el valor de la reclasificación por aptitud, a continuación se rasterizaron en QGIS bajo los parámetros de resolución descritos anteriormente. 
+
+***Importancia de las Variables***
+
+Los pesos fueron derivados mediante el Proceso Analítico Jerárquico (AHP) propuesto por Saaty (1980, 2008), priorizando el clima como factor limitante principal para la gulupa, especialmente temperatura y riesgo de heladas, seguido de los factores edáficos y finalmente los topográficos. La jerarquización de estas variables en modelos espaciales de aptitud ha sido validada en estudios de zonificación agrícola que integran herramientas SIG y AHP (Akinci et al., 2013; Ceballos-Silva & López-Blanco, 2010; Mishra et al., 2015).
+
+Los pesos asignados se presentan en la Tabla 3, en la que se añade la jusitificación de la clasificación de acuerdo a la literatura consultada en la que se incluyó la biología floral, enfermedades, limitaciones por estrés abiótico y posibilidad de manejo. En general, la prioridad asignada a las variables de temperatura y altitud se fundamenta en su caracter de factores limitantes para la etapa reproductiva de la gulupa (Ocampo & Wyckhuys, 2012; Pérez & Melgarejo, 2012), por otro lado, variables como el pH o la fertilidad del suelo reciben menor peso al ser modificables mediante el manejo agronómico (Guerrero-López et al., 2012; Ocampo & Wyckhuys, 2012).
+
+**Tabla 3.** Peso de cada variable de acuerdo a la metodología de Proceso Analítico Jerárquico.
+
+| **Variable** | **Peso (%)** | **Peso decimal** | **Justificación** |
+|---|:---:|:---:|---|
+| Temperatura promedio | 12% | 0.12 | Factor principal para crecimiento y floración |
+| Altitud | 12% | 0.12 | Proxy crítico en los Andes para clima y presión de plagas |
+| Riesgo de heladas | 10% | 0.10 | La gulupa es altamente sensible|
+| Uso actual | 9% | 0.09 | Facilidad de establecimiento y normativa de conservación |
+| Precipitación anual | 8% | 0.08 | Vital para el llenado del fruto y balance hídrico |
+| Humedad Relativa | 8% | 0.08 | Controla la incidencia de enfermedades fúngicas como la roña |
+| Profundidad del suelo | 7% | 0.07 | El sistema radicular es superficial pero requiere drenaje |
+| Textura de suelos | 7% | 0.07 | Influye directamente en el drenaje y aireación radicular |
+| Fertilidad natural | 6% | 0.06 | Importante para reducir costos de insumos, requiere alta M.O. |
+| Horas sol | 5% | 0.05 | La luz solar directa estimula las yemas reproductivas |
+| Acidez (pH) | 5% | 0.05 | Afecta la disponibilidad de nutrientes; corregible pero limitante |
+| Geomorfología | 4% | 0.04 | Determina la estabilidad y riesgos de encharcamiento |
+| Vientos | 3% | 0.03 | Pueden causar daños mecánicos y afectar polinizadores |
+| Paisaje | 2% | 0.02 | Contexto regional de conectividad y aptitud general |
+| Evapotranspiración | 2% | 0.02 | Factor secundario en el balance hídrico local |
+
+
+***Combinación Líneal Ponderada (WLC) en la Calculadora Ráster***
+
+La Combinación Lineal Ponderada integra todos los criterios reclasificados mediante:
+
+$$
+\text{Aptitud\_Final} = \sum_{i=1}^{n} w_i \times RC_i
+$$
+
+Donde $w_i$ es el peso AHP del criterio $i$ y $RC_i$ es el raster reclasificado con valores 1–4 de aptitud. Esta expresión fue ajustada en la calculadora raster según los pesos presentados en la Tabla 3. Este proceso también puede ser automatizado como se presenta a continuación: 
+
+```python
+#| label: combinacion_wlc_python
+#| eval: false
+
+import numpy as np
+import rasterio
+import os
+
+# -------------------------------------------------------
+# PESOS AHP (deben sumar exactamente 1.0)
+# -------------------------------------------------------
+pesos = {
+    "RC_Temperatura.tif":       0.12,
+    "RC_Altitud.tif":           0.12,
+    "RC_Heladas.tif":           0.10,
+    "RC_UsoActual.tif":         0.09,
+    "RC_Precipitacion.tif":     0.08,
+    "RC_HumedadRelativa.tif":   0.08,
+    "RC_Profundidad.tif":       0.07,
+    "RC_Textura.tif":           0.07,
+    "RC_Fertilidad.tif":        0.06,
+    "RC_HorasSol.tif":          0.05,
+    "RC_pH.tif":                0.05,
+    "RC_Geomorfologia.tif":     0.04,
+    "RC_Vientos.tif":           0.03,
+    "RC_Paisaje.tif":           0.02,
+    "RC_Evapotranspiracion.tif": 0.02
+}
+
+# Verificar que los pesos sumen 1.0
+suma_pesos = sum(pesos.values())
+assert abs(suma_pesos - 1.0) < 0.001, f"ERROR: Los pesos suman {suma_pesos:.4f}, deben sumar 1.0"
+print(f"Verificación de pesos: suma = {suma_pesos:.4f} ✓")
+
+# -------------------------------------------------------
+# COMBINACIÓN LINEAL PONDERADA
+# -------------------------------------------------------
+dir_rc = "capas_reclasificadas/"
+ruta_salida = "Aptitud_Gulupa_Ipiales_WLC.tif"
+
+# Leer el primer raster para obtener perfil de referencia
+primer_archivo = list(pesos.keys())[0]
+with rasterio.open(dir_rc + primer_archivo) as src_ref:
+    perfil = src_ref.profile.copy()
+    forma = src_ref.read(1).shape
+    nodata_val = -9999
+
+# Inicializar acumulador
+aptitud_acumulada = np.zeros(forma, dtype=np.float32)
+mascara_nodata = np.zeros(forma, dtype=bool)
+
+for nombre_archivo, peso in pesos.items():
+    ruta_capa = dir_rc + nombre_archivo
+    with rasterio.open(ruta_capa) as src:
+        capa = src.read(1).astype(np.float32)
+        nd = src.nodata if src.nodata is not None else -9999
+        
+        # Identificar y acumular celdas nodata
+        mascara_nd_capa = (capa == nd) | np.isnan(capa)
+        mascara_nodata |= mascara_nd_capa
+        
+        # Reemplazar nodata por 0 para la suma (se excluirán al final)
+        capa[mascara_nd_capa] = 0
+        
+        # Acumular combinación ponderada
+        aptitud_acumulada += capa * peso
+    
+    print(f"  Sumada: {nombre_archivo} (peso: {peso:.2f})")
+
+# Restaurar NoData en zonas sin datos
+aptitud_acumulada[mascara_nodata] = nodata_val
+
+# Guardar resultado
+perfil.update(dtype="float32", nodata=nodata_val, count=1)
+with rasterio.open(ruta_salida, "w", **perfil) as dst:
+    dst.write(aptitud_acumulada, 1)
+
+print(f"\nMapa WLC guardado en: {ruta_salida}")
+print(f"Rango de valores (sin NoData): {aptitud_acumulada[~mascara_nodata].min():.2f} – "
+      f"{aptitud_acumulada[~mascara_nodata].max():.2f}")
+```
+***Clasificación Final de Aptitud***
+
+El raster resultante fue clasificado en cuatro categorías estándar de acuerdo a los umbrales presentados en la Tabla 4.
+
+**Tabla 4.** Umbrales de clasificación para el mapa final de aptitud**
+
+| Valor WLC | Categoría UPRA | Descripción |
+|:---:|---|---|
+| **3.5 – 4.0** | **A1** — Aptitud Alta | Condiciones óptimas para el cultivo comercial de gulupa |
+| **2.5 – 3.49** | **A2** — Aptitud Media | Condiciones favorables con limitaciones menores manejables |
+| **1.5 – 2.49** | **A3** — Aptitud Baja | Condiciones con limitaciones importantes; requiere inversión |
+| **1.0 – 1.49** | **N** — No Apto | Condiciones excluyentes o incompatibles con el cultivo |
+
+```python
+#| label: clasificacion_final
+#| eval: false
+
+import numpy as np
+import rasterio
+
+ruta_wlc   = "Aptitud_Gulupa_Ipiales_WLC.tif"
+ruta_final = "Aptitud_Gulupa_Ipiales_FINAL.tif"
+
+with rasterio.open(ruta_wlc) as src:
+    wlc    = src.read(1).astype(np.float32)
+    perfil = src.profile.copy()
+    nodata = src.nodata if src.nodata is not None else -9999
+
+clasificado = np.full_like(wlc, nodata, dtype=np.int16)
+mascara_valida = wlc != nodata
+
+# Aplicar umbrales UPRA
+clasificado[mascara_valida & (wlc >= 3.5)]                      = 4  # A1 — Aptitud Alta
+clasificado[mascara_valida & (wlc >= 2.5) & (wlc < 3.5)]       = 3  # A2 — Aptitud Media
+clasificado[mascara_valida & (wlc >= 1.5) & (wlc < 2.5)]       = 2  # A3 — Aptitud Baja
+clasificado[mascara_valida & (wlc >= 1.0) & (wlc < 1.5)]       = 1  # N  — No Apto
+
+perfil.update(dtype="int16", nodata=-9999)
+with rasterio.open(ruta_final, "w", **perfil) as dst:
+    dst.write(clasificado, 1)
+
+# Estadísticas de área por categoría
+print("\nDistribución de aptitud:")
+etiquetas = {4: "A1 - Aptitud Alta", 3: "A2 - Aptitud Media",
+             2: "A3 - Aptitud Baja", 1: "N  - No Apto"}
+total_px = clasificado[mascara_valida].size
+for clase, etiqueta in sorted(etiquetas.items(), reverse=True):
+    px = np.sum(clasificado == clase)
+    ha = px * 30 * 30 / 10000  # Área en hectáreas (celda 30x30 m)
+    print(f"  {etiqueta}: {px:,} píxeles | {ha:,.1f} ha ({px/total_px*100:.1f}%)")
+
+print(f"\nMapa final guardado: {ruta_final}")
+```
+
+***Validación y Composición Cartográfica***
+
+Para evaluar de forma integral la aptitud, fue necesario excluir coberturas de acuerdo al uso del suelo independientemente del puntaje WLC (Tabla 5) utilizando una máscara de exclusión. 
+
+**Tabla 5.** Zonas de exclusión debido al uso o cobertura del suelo. 
+
+| Cobertura / Condición | Justificación |
+|---|---|
+| Cuerpos de agua (ríos, lagunas, embalses) | Incompatibilidad física |
+| Áreas urbanas y centros poblados | Uso incompatible |
+| Bosque natural conservado (CORINE 3.1.x) | Restricción normativa |
+| Áreas SINAP / RUNAP | Restricción legal |
+| Riesgo de heladas alto/frecuente | Restricción climática inapelable |
+| Zonas de movimientos en masa activos (SGC) | Restricción de amenaza natural |
+
+
+```python
+#| label: mascara_exclusion
+#| eval: false
+
+import numpy as np
+import rasterio
+
+ruta_final    = "Aptitud_Gulupa_Ipiales_FINAL.tif"
+ruta_mascara  = "mascara_exclusion.tif"   # Raster binario: 1=excluir, 0=incluir
+ruta_enmascarado = "Aptitud_Gulupa_Ipiales_FINAL_ENMASCARADO.tif"
+
+with rasterio.open(ruta_final) as src_apt, \
+     rasterio.open(ruta_mascara) as src_mask:
+    
+    aptitud = src_apt.read(1)
+    mascara = src_mask.read(1)
+    perfil  = src_apt.profile.copy()
+
+# Aplicar exclusión: donde mascara == 1, asignar NoData
+resultado = aptitud.copy()
+resultado[mascara == 1] = -9999
+
+with rasterio.open(ruta_enmascarado, "w", **perfil) as dst:
+    dst.write(resultado, 1)
+
+print("Máscara de exclusión aplicada.")
+```
+
+***Estadísticas de área y exportación de tabla***
+
+```python
+#| label: estadisticas_area
+#| eval: false
+
+import numpy as np
+import rasterio
+import pandas as pd
+
+ruta_final = "Aptitud_Gulupa_Ipiales_FINAL_ENMASCARADO.tif"
+
+with rasterio.open(ruta_final) as src:
+    datos = src.read(1)
+    res_x, res_y = abs(src.transform.a), abs(src.transform.e)
+
+area_px_ha = (res_x * res_y) / 10000  # Ha por píxel
+
+categorias = {
+    4: "A1 - Aptitud Alta",
+    3: "A2 - Aptitud Media",
+    2: "A3 - Aptitud Baja",
+    1: "N  - No Apto"
+}
+
+filas = []
+total = np.sum(datos > 0)
+for clase, nombre in categorias.items():
+    px   = int(np.sum(datos == clase))
+    ha   = px * area_px_ha
+    pct  = px / total * 100 if total > 0 else 0
+    filas.append({"Categoría": nombre, "Píxeles": px,
+                  "Área (ha)": round(ha, 2), "Porcentaje (%)": round(pct, 2)})
+
+df = pd.DataFrame(filas)
+print("\nTabla de aptitud:")
+print(df.to_string(index=False))
+df.to_csv("tabla_aptitud_gulupa_ipiales.csv", index=False)
+print("\nTabla exportada a: tabla_aptitud_gulupa_ipiales.csv")
+```
+
+***Consideraciones Metodológicas y Limitaciones***
+
+1. **Escala de trabajo**: El análisis es apropiado para escala 1:25.000 – 1:50.000. Para toma de decisiones prediales se requiere mayor resolución. La escala manejada es adecuada debido al área de estudio limitada al municipio de Ipiales. 
+
+2. **Correlación entre variables climáticas**: Temperatura promedio, altitud y riesgo de heladas son variables correlacionadas. Se incluyeron por separado dado que cada una captura un aspecto diferente del riesgo para la gulupa; sin embargo, el analista debe ser consciente de que el componente climático acumula el 34% del peso total.
+
+3. **Variables categóricas y disponibilidad**: Las capas de textura, fertilidad, geomorfología, paisaje y uso actual dependen de la calidad y actualización de los estudios de suelos del IGAC para Nariño. Las variables obtenidas del IDEAM mostraron una limitación en la adquisición de datos de la entidad, ya que depende de la presencia de estaciones climatológicas en la zona de estudio, para la variable de Horas sol fue necesario realizar una interpolación debido a la baja cantidad de datos en la zona. 
+
+4. **Validación de campo**: El mapa resultante debe validarse con visitas a campo en zonas representativas de cada categoría, verificando condiciones reales de cultivo y la presencia actual de gulupa.
+
+5. **Sin plugin AHP ni WMCA**: La aplicación directa de los pesos en la Calculadora Raster es equivalente en resultado a usar esos plugins, con la ventaja de ser completamente transparente, documentable y reproducible.
+
+# Resultados y Discusión 
+
+Dentro de las variables consideradas en el modelo, la delimitación de zonas buffer alrededor de los centros poblados constituyó un criterio complementario para la evaluación de aptitud territorial. Este factor permitió incorporar aspectos relacionados con la disponibilidad de polinizadores, el acceso a infraestructura, insumos y servicios de apoyo, así como la logística de cosecha y comercialización, elementos que pueden influir en la viabilidad técnica y económica del establecimiento del cultivo de gulupa (Medina-Gutiérrez et al., 2012; Ocampo & Wyckhuys, 2012; Pérez & Melgarejo, 2012).
+
+De acuerdo con la metodología AHP, las variables con mayor influencia sobre la aptitud territorial fueron la temperatura (Figura 2) y la altitud (Figura 3). Estos factores determinan el tiempo térmico necesario para completar las etapas fenológicas, además de influir directamente sobre la viabilidad reproductiva y la calidad final del fruto (Pérez & Melgarejo, 2012; Salazar-Gutiérrez et al., 2013). En tercer lugar se ubicó el riesgo de heladas (Figura 4), debido a la alta sensibilidad de la especie a las bajas temperaturas, las cuales pueden retrasar el crecimiento vegetativo y prolongar el tiempo requerido para alcanzar la cosecha.
+
+![](Temperatura.jpg)
+**Figura 2.**Temperatura promedio en Ipiales, Nariño
+
+![](Altura.jpg)
+**Figura 3.** Altitud de Ipiales, Nariño.
+
+
+![Heladas](Heladas.jpg)
+**Figura 4.** Riesgo de heladas en Ipiales, Nariño. 
+
+La integración de las variables evaluadas mediante el modelo de Evaluación Multicriterio (AHP) permitió identificar tres categorías de aptitud para el establecimiento del cultivo de gulupa en el municipio de Ipiales (Figura 5). Del área total analizada, el 36.56 % correspondió a áreas de aptitud alta, el 37.84 % a aptitud media y el 25.59 % a aptitud baja (Tabla 6), este análisis excluyendo centros poblados, cuerpos de agua, infraestructura vial, zonas de protección y coberturas incompatibles con el cultivo. 
+
+**Tabla 6.** Área clasificada en categorías de aptitud. 
+
+| Categoría de aptitud | Área (ha) | Porcentaje (%) |
+|---------------------|----------:|---------------:|
+| Aptitud baja | 35.06 | 25.59 |
+| Aptitud media | 51.84 | 37.84 |
+| Aptitud alta | 50.08 | 36.56 |
+| Total | 136.98 | 100.00 |
+
+Las áreas de aptitud alta se localizan principalmente en el sector norte del municipio, comprendiendo las veredas de San Antonio, La Providencia, Santa Lucía, Mirador, San Luis, Las Ánimas, Versalles y La Playa. Adicionalmente, se identificaron sectores favorables en el corredor sur y suroriental, particularmente en las veredas Los Alpes y Lucitamba. Estas zonas presentan una combinación favorable de temperatura, altitud y bajo riesgo de heladas, variables que obtuvieron los mayores pesos dentro del modelo AHP y que son determinantes para el desarrollo fisiológico y reproductivo de la gulupa.
+
+![Mapa de aptitud](Aptitud_Final.jpg)
+**Figura 5.** Aptitud para el establecimiento del cultivo de gulupa en Ipiales, Nariño. 
+
+La distribución espacial observada coincide con los requerimientos agroecológicos reportados para la especie. Las áreas clasificadas como altamente aptas se encuentran asociadas a temperaturas moderadas y rangos altitudinales que favorecen la floración, el cuajamiento de frutos y el desarrollo vegetativo. Por el contrario, las zonas de aptitud baja se concentran principalmente hacia el sur del municipio, donde las condiciones térmicas y el riesgo de heladas representan mayores limitaciones para el establecimiento del cultivo. Estudios previos han señalado que las variaciones en temperatura y altitud afectan directamente la duración de las etapas fenológicas, la viabilidad del polen y la productividad del cultivo (Guerrero-López et al., 2012; Pérez & Melgarejo, 2012; Salazar-Gutiérrez et al., 2013; Vela Hernández, 2024).
+
+Otro factor relevante corresponde al riesgo de heladas, las zonas clasificadas como altamente aptas presentan una menor probabilidad de ocurrencia de temperaturas mínimas críticas, reduciendo el riesgo de daños en tejidos vegetales, retrasos en el crecimiento y pérdidas de productividad (Guerrero-López et al., 2012). Debido a la alta sensibilidad de la gulupa a este fenómeno, la ausencia de eventos frecuentes de heladas constituye una ventaja importante para el establecimiento de plantaciones comerciales.
+
+Por otra parte, las variables asociadas al componente edáfico, como el pH y la fertilidad natural, presentaron una menor influencia relativa dentro del modelo debido a que pueden ser modificadas mediante prácticas de manejo agronómico. La aplicación de enmiendas, fertilización basada en análisis de suelo y acondicionamiento físico del terreno permiten corregir parcialmente estas limitaciones (Angulo, 2009; Cárdenas-Pira et al., 2019; Guerrero-López et al., 2012; Ocampo & Wyckhuys, 2012), aumentando la viabilidad productiva de áreas inicialmente menos favorables. De igual manera, factores relacionados con la textura del suelo pueden mitigarse mediante labores de preparación del terreno y sistemas de drenaje adecuados, reduciendo riesgos asociados a la anoxia radicular y enfermedades vasculares (Angulo, 2009; Guerrero-López et al., 2012; Ocampo & Wyckhuys, 2012). Para el caso de la geomorfología y el paisaje, en general los sistemas de conducción son adaptables a diferentes pendientes y formas del terreno, lo que hace de estos criterios mejorables bajo el correcto manejo agronómico. 
+
+En conjunto, los resultados indican que las condiciones climáticas constituyen el principal factor limitante para la expansión del cultivo de gulupa en Ipiales. La identificación de áreas con aptitud alta proporciona información relevante para orientar procesos de planificación productiva, reducir la incertidumbre asociada al establecimiento de nuevas plantaciones y promover una expansión sostenible del cultivo en el municipio.
+
+Los resultados obtenidos son consistentes con investigaciones realizadas en otros contextos geográficos donde la temperatura, la topografía y las características del suelo han sido identificadas como factores determinantes en la evaluación de aptitud agrícola. Hussain et al. (2024), en Pakistán, encontraron que la combinación de variables climáticas y edáficas permitió identificar áreas con alta aptitud para la expansión agrícola sostenible. De manera similar, Abuzaid y El-Husseiny (2022) reportaron en Egipto que la disponibilidad hídrica y las condiciones climáticas constituyen factores críticos para la aptitud productiva, mientras que Akıncı et al. (2013) señalaron en Turquía que las variables topográficas y edáficas tienen una influencia significativa en la delimitación de áreas agrícolas potenciales. Aunque estos estudios se desarrollaron en condiciones agroecológicas distintas, coinciden en destacar la utilidad de la integración entre SIG y AHP para la planificación territorial agrícola.
+
+Aunque los resultados permiten identificar áreas con potencial para el establecimiento de gulupa, estos dependen de la calidad y resolución de la información espacial utilizada. Por ello, se recomienda complementar los resultados con verificaciones de campo y estudios detallados de suelos y clima que permitan validar las zonas identificadas como altamente aptas. Además, es necesario reconocer las limitaciones de las fuentes de información de datos climáticos y del suelo debido a falta de actualización o la no disponibilidad de bases meteorológicas en la zona de estudio. 
+
+# Conclusiones
+
+La integración de Sistemas de Información Geográfica (SIG) y el Proceso de Jerarquía Analítica (AHP) permitió identificar áreas con diferentes niveles de aptitud para el establecimiento del cultivo de gulupa en el municipio de Ipiales, Nariño. Mediante la evaluación conjunta de variables climáticas, edáficas, topográficas y de accesibilidad, se determinó que el 36,56 % del área evaluada presenta aptitud alta y el 37,84 % aptitud media, evidenciando la existencia de zonas con condiciones favorables para la expansión del cultivo.
+
+El análisis multicriterio permitió establecer que la temperatura, la altitud y el riesgo de heladas constituyen las variables más determinantes para la aptitud territorial de la gulupa, debido a su influencia sobre la floración, el cuajamiento de frutos, la calidad de la producción y el desarrollo fenológico del cultivo. A diferencia de otros factores, estas variables presentan una limitada capacidad de manejo agronómico, por lo que representan los principales criterios para la selección de nuevas áreas productivas.
+
+Las zonas con mayor aptitud se localizaron principalmente en el sector norte del municipio y en algunos sectores de los corredores sur y suroriental, donde convergen condiciones climáticas favorables y un menor riesgo de eventos limitantes. En este sentido, el mapa de aptitud generado constituye una herramienta de apoyo para la planificación territorial y la toma de decisiones productivas, contribuyendo a orientar futuras inversiones y promover una expansión sostenible del cultivo de gulupa en el municipio de Ipiales.
+
+
+# Referencias Bibliográficas
+
+Abuzaid, A. S., & El-Husseiny, A. M. (2022). Modeling crop suitability under micro irrigation using a hybrid AHP-GIS approach. *Arabian Journal of Geosciences, 15*, 1217. https://doi.org/10.1007/s12517-022-10486-8
+
+Akıncı, H., Özalp, A. Y., & Turgut, B. (2013). Agricultural land use suitability analysis using GIS and AHP technique. *Computers and Electronics in Agriculture, 97*, 71–82. https://doi.org/10.1016/j.compag.2013.07.006
+
+Angulo, R. (2009). Gulupa (Passiflora edulis var. edulis Sims). Bogotá, Colombia: Bayer CropScience.
+
+Cáceres, J. L. (2026). Determinación de los requerimientos nutricionales de las plantas de gulupa (Passiflora edulis Sims) cultivadas bajo condiciones de cubierta en la Sabana de Bogotá. Recuperado de: https://repositorio.unal.edu.co/handle/unal/89572
+
+Cárdenas-Pira, W. T., Torres Moya, E., Hurtado Clopatosky, S., Magnitskiy, S., & Melgarejo, L. M. (2019). Sintomatología de deficiencias de nutrientes minerales en plantas de gulupa (Passiflora edulis Sims f. edulis) en estado vegetativo. En L. M. Melgarejo (Ed.), Gulupa (Passiflora edulis), curuba (Passiflora tripartita), aguacate (Persea americana) y tomate de árbol (Solanum betaceum) (pp. 163-188). Bogotá, Colombia: Universidad Nacional de Colombia
+
+Ceballos-Silva, A. P., & López-Blanco, J. (2010). Delimitación de áreas adecuadas para cultivos de alternativa: una evaluación multicriterio-SIG. Terra Latinoamericana, 28(2), 109-118. Recuperado en 01 de abril de 2026, de http://www.scielo.org.mx/scielo.php?script=sci_arttext&pid=S0187-57792010000200002&lng=es&tlng=es.
+
+Cuspoca-Chaparro, E. D., Melo-Torres, L. I., & Mesa-Mojica, J. I. (2024). Propuesta de una red
+de gestión del conocimiento para la industria de la gulupa en Colombia. Respuestas, 29(1), 67–83. https://doi.org/10.22463/0122820X.4165
+
+De Armas Acosta, R. J., Martín Gómez, P. F., & Rangel Díaz, J. E. (2022). Gulupa (Passiflora edulis Sims), su potencial para exportación, su matriz y su firma de maduración: una revisión. Ciencia y Agricultura, 19(1), 15–27. https://doi.org/10.19053/01228420.v19.n1.2022.13822
+
+Escobar Quiñónez, E. E., Collazos Restrepo, A., & García Molina, G. (2024). Tendencias para la internacionalización y tecnificación de la gulupa en Colombia: Una revisión bibliométrica con Bibliometrix. Revista
+Científica Profundidad Construyendo Futuro, 21(21), 50–61. https://doi.org/10.22463/24221783.4369
+
+ExpoAgrofuturo. (2021). *Condiciones agroecológicas para el cultivo de gulupa en Colombia*. https://expoagrofuturo.com/es/blog-articulo/32/
+
+Fischer, G., Miranda, D., & Carranza, C. (2018). *Passiflora edulis* Sims. En G. Fischer (Ed.), *Manual para el cultivo de frutales en el trópico* (pp. 625–668). Produmedios.
+
+Guerrero-López, E., Potosí-Guampe, C., Melgarejo, L. M., & Hoyos-Carvajal, L. (2012). Manejo agronómico de gulupa (Passiflora edulis Sims) en el marco de las buenas prácticas agrícolas (BPA). En L. M. Melgarejo (Ed.), Ecofisiología del cultivo de la gulupa (Passiflora edulis Sims) (pp. 123-144). Bogotá, Colombia: Universidad Nacional de Colombia.
+
+Hussain, S., Nasim, W., Mubeen, M., Fahad, S., Tariq, A., Karuppannan, S., Alqadhi, S., Mallick, J., Almohamad, H., & Abdo, H. G. (2024). Agricultural land suitability analysis of Southern Punjab, Pakistan using analytical hierarchy process (AHP) and multi-criteria decision analysis (MCDA) techniques. *Cogent Food & Agriculture, 10*(1), 2294540. https://doi.org/10.1080/23311932.2023.2294540
+
+Instituto Colombiano Agropecuario (ICA). (2019, marzo 6). Productores de gulupa nariñense recibieron el registro para la exportación en fresco. https://www.ica.gov.co/noticias/ica-registro-exportacion-frescoproductores-gulupa
+
+Instituto Geográfico Agustín Codazzi (IGAC). (2006). *Métodos analíticos del laboratorio de suelos* (6.ª ed.). Instituto Geográfico Agustín Codazzi.
+
+Medina-Gutiérrez, J., Ospina-Torres, R., & Nates-Parra, G. (2012). Efectos de la variación altitudinal sobre la polinización en cultivos de gulupa (Passiflora edulis f. edulis). Acta Biológica Colombiana, 17(2), 379-393
+
+Melgarejo, L. M. (Ed.). (2011). *Ecofisiología del cultivo de la gulupa*. Universidad Nacional de Colombia.
+
+Miranda, D., Ulrichs, C., Fischer, G., & Guerrero, G. (2009). Influencia de la altitud en el crecimiento vegetativo y reproductivo de la gulupa. *Agronomía Colombiana, 27*(3), 345–354.
+
+Mishra, A. K., Deep, S., & Choudhary, A. (2015). Identification of suitable sites for organic farming using AHP & GIS. The Egyptian Journal of Remote Sensing and Space Sciences, 18(2), 181–193.
+ https://doi.org/10.1016/j.ejrs.2015.06.005
+
+Ocampo, J., & Wyckhuys, K. (Eds.). (2012). Tecnología para el cultivo de la Gulupa en Colombia (Passiflora edulis f. edulis Sims). Bogotá, Colombia: Centro de Bio-Sistemas de la Universidad Jorge Tadeo Lozano, Centro Internacional de Agricultura Tropical - CIAT y Ministerio de Agricultura y Desarrollo Rural.
+
+Orjuela-Baquero, N. M., Campos Alba, S., Sánchez Nieves, J., Melgarejo, L. M., & Hernández, M. S. (2011). Manual de manejo poscosecha de la gulupa (Passiflora edulis Sims). En L. M. Melgarejo & M. S. Hernández (Eds.), Poscosecha de la gulupa (Passiflora edulis Sims) (pp. 7-22). Universidad Nacional de Colombia
+
+Pérez, L. V., & Melgarejo, L. M. (2012). Caracterización ecofisiológica de la gulupa (Passiflora edulis Sims) bajo tres condiciones ambientales en el departamento de Cundinamarca. En L. M. Melgarejo (Ed.), Ecofisiología del cultivo de la gulupa (Passiflora edulis Sims) (pp. 11-32). Bogotá, Colombia: Universidad Nacional de Colombia.
+
+QGIS Development Team. (2024). *QGIS User Guide (Version 3.34)*. https://docs.qgis.org/3.34/es/docs/user_manual/
+
+Saaty, T. L. (1980). *The analytic hierarchy process*. McGraw-Hill.
+
+Salazar-Gutiérrez, M. R., Johnson, J., Chaves-Cordoba, B., & Hoogenboom, G. (2013). Relationship of base temperature to development of green peas. HortScience, 48(7), 957-963. [Nota: Citado como base metodológica para el tiempo térmico en los estudios de gulupa].
+
+Saraiva, D. G., Ferreira, A. L., Fajoli, L. P., & Barbosa, B. M. (2025). Uso de sistemas de informação geográfica (SIG) na agricultura. Observatorio de la Economía Latinoamericana, 2 (4), e9642.https://doi.org/10.55905/oelv23n4-134
+
+Unidad de Planificación Rural Agropecuaria (UPRA). (2021). *Memoria técnica: Zonificación de aptitud para el cultivo comercial de gulupa*. Ministerio de Agricultura y Desarrollo Rural. https://upra.gov.co/es-co/node/1023
+
+Vela Hernández, Y. P. (2024). Determinación de un modelo fenológico para el cultivo de gulupa (Passiflora edulis f. edulis Sims) en condiciones de invernadero en la Sabana de Bogotá [Trabajo de grado de pregrado, Universidad Nacional Abierta y a Distancia UNAD]
