@@ -45,8 +45,7 @@ Evaluar la aptitud territorial para el establecimiento de un sistema productivo 
 
 El municipio de Ipiales se localiza en el sur del departamento de Nariño, en la frontera colombo-ecuatoriana (latitud ~0°50'N, longitud ~77°39'W). Se caracteriza por un relieve andino con altitudes entre 2.800 y 3.400 msnm, aunque existen vertientes y cañones que descienden hasta 1.200 msnm, condición que genera una importante variabilidad bioclimática y hace del municipio un territorio con zonas potencialmente aptas para la gulupa.
 
-![Mapa de ubicación](Mapageneral.jpg)
-
+![Mapa de ubicación](images/Mapageneral.jpg)
 
 # Fuentes de Datos
 
@@ -59,6 +58,8 @@ Para la oferta edafológica se obtuvo la información de los catálogos y bases 
 potenciales.
 
 **Tabla 1.** Fuentes y características de las variables utilizadas para el análisis. 
+
+::: {.table-responsive}
 
 | Variable | Capa / Fuente | Resolución original |
 |---|---|---|
@@ -78,10 +79,26 @@ potenciales.
 | Evapotranspiración | WorldClim / FAO – ETo | ~1 km |
 | Paisaje | IGAC – Unidades de Paisaje | Vectorial |
 
+:::
 
 # Metodología 
 
-***Preparación y Homogenización de capas***
+## Requerimientos de software
+
+**Tabla 2.** Requerimientos de software para el proyecto.
+
+::: {.table-responsive}
+| Software / Herramienta | Versión recomendada | Uso en el análisis |
+|---|---|---|
+| QGIS | ≥ 3.28 LTR | Plataforma principal de geoprocesamiento |
+| SAGA GIS (integrado en QGIS) | Automático | Reclasificación raster avanzada |
+| GRASS GIS (integrado en QGIS) | Automático | Análisis de pendientes, distancias |
+| Calculadora Raster QGIS | Nativa | Combinación lineal ponderada (WLC) |
+| Python + GDAL (opcional) | ≥ 3.10 | Automatización de reclasificación |
+| Google Earth Engine | Cuenta registrada | Descarga de capas climáticas (WorldClim, SRTM) |
+:::
+
+## Preparación y Homogenización de capas
 
 Se reproyectaron todas las capas descritas en la Tabla 1 al sistema de coordenadas MAGNA-SIRGAS / Colombia Zona Centro-Oeste EPSG:9377 y se utilizó el límite municipal de Ipiales como máscara de recorte para todas las capas. Además, de estableció el tamaño de celda uniforme de 30 m para todo el análisis con el fin de asegurar que las capas presenten la misma extensión, resolución y SRC. Esto se comprobó con el alineamiento de rásteres en QGIS.
 
@@ -134,7 +151,7 @@ ds_ref = None
 print("Homogenización completada.")
 ```
 
-***Reclasificación por Criterio***
+## Reclasificación por Criterio
 
 El método implementado corresponde a la Combinación Lineal Ponderada (WLC — *Weighted Linear Combination*), en la que cada capa reclasificada se multiplica por su peso AHP y los productos se suman en la Calculadora Raster de QGIS. Los pesos fueron definidos mediante el Proceso Analítico Jerárquico (AHP) de Saaty (1980), priorizando los factores climáticos como limitantes principales para la gulupa en el altiplano nariñense. 
 
@@ -147,9 +164,9 @@ La escala de aptitud utilizada es de 1 a 4 en donde:
 - **2** = Marginalmente Apto
 - **1** = No Apto
 
-Cada raster de las capas descritas se reclasificó en esta escala previo a la combinación ponderada y siguiendo los criterios de reclasificación presentados en la Tabla 2 de acuerdo a la revisión bibliográfica realizada. 
+Cada raster de las capas descritas se reclasificó en esta escala previo a la combinación ponderada y siguiendo los criterios de reclasificación presentados en la Tabla 3 de acuerdo a la revisión bibliográfica realizada. 
 
-**Tabla 2.** Clasificación del grado de aptitud para cada variable. 
+**Tabla 3.** Clasificación del grado de aptitud para cada variable. 
 
 ::: {.table-responsive}
 
@@ -168,7 +185,7 @@ Cada raster de las capas descritas se reclasificó en esta escala previo a la co
 | Pendiente (%) | 15% – 30% | < 15% / 30% – 100% | > 100% (45°) o inundables | (Ocampo & Wyckhuys, 2012; Angulo, 2009) |
 ::: 
  
-***Reclasificación en QGIS***
+## Reclasificación en QGIS
 
 Se automatizó la reclasificación de los rasters númericos conitinuos garantizando reproducibilidad 
 
@@ -359,34 +376,269 @@ print("\nReclasificación de rasters continuos completada.")
 
 Para la reclasificación de las capas vectoriales que contenían categorías como las capas de Textura, Fertilidad, Uso Actual, Geomorfología y Paisaje derivadas del IGAC se editó la tabla de atributos añadiendo el valor de la reclasificación por aptitud, a continuación se rasterizaron en QGIS bajo los parámetros de resolución descritos anteriormente. 
 
-***Importancia de las Variables***
+## Importancia de las Variables
 
 Los pesos fueron derivados mediante el Proceso Analítico Jerárquico (AHP) propuesto por Saaty (1980, 2008), priorizando el clima como factor limitante principal para la gulupa, especialmente temperatura y riesgo de heladas, seguido de los factores edáficos y finalmente los topográficos. La jerarquización de estas variables en modelos espaciales de aptitud ha sido validada en estudios de zonificación agrícola que integran herramientas SIG y AHP (Akinci et al., 2013; Ceballos-Silva & López-Blanco, 2010; Mishra et al., 2015).
 
-Los pesos asignados se presentan en la Tabla 3, en la que se añade la jusitificación de la clasificación de acuerdo a la literatura consultada en la que se incluyó la biología floral, enfermedades, limitaciones por estrés abiótico y posibilidad de manejo. En general, la prioridad asignada a las variables de temperatura y altitud se fundamenta en su caracter de factores limitantes para la etapa reproductiva de la gulupa (Ocampo & Wyckhuys, 2012; Pérez & Melgarejo, 2012), por otro lado, variables como el pH o la fertilidad del suelo reciben menor peso al ser modificables mediante el manejo agronómico (Guerrero-López et al., 2012; Ocampo & Wyckhuys, 2012).
+Para la agrupación de las variables (Tabla 4), se tuvo en cuenta que la gulupa es fisiológicamente sensible al clima y puede tolerar con manejo agronómico la amyor parte de las limitantes del suelo (encalado, fertilización, drenajes), por eso el clima concentra más de dos tercios del peso total, el suelo un sexto, y la topografía, que actúa más como modulador secundario, el residuo menor, y el uso actual del suelo se dejó como grupo independiente porque no es una condición biofísica sino una restricción de normativa o logística, por lo que su peso se calibró de forma intermedia.
 
-**Tabla 3.** Peso de cada variable de acuerdo a la metodología de Proceso Analítico Jerárquico.
+Dentro de cada grupo, cada variable se compara con todas las demás variables del estudio en una única matriz de 15×15. En este análisis se aplicó una comparación pareada única y directa entre las 15 variables y la pertenencia a un grupo se usó únicamente como criterio de coherencia para decidir, en cada comparación, cuál variable domina a cuál y por cuánto.
 
-| **Variable** | **Peso (%)** | **Peso decimal** | **Justificación** |
+**Tabla 4.** Peso acumulado de las agrupaciones de las variables. 
+
+::: {.table-responsive}
+| Grupo | Variables incluidas | N.º | Peso acumulado |
+|---|---|:---:|:---:|
+| **Climático** | Temp. promedio, Altitud, Heladas, Precipitación, Humedad relativa, Horas sol, Evapotranspiración | 7 | **68.18 %** |
+| **Edáfico (suelos)** | Profundidad, Textura, Fertilidad natural, Acidez (pH) | 4 | **17.95 %** |
+| **Uso actual del suelo** | Uso actual | 1 | **8.34 %** |
+| **Topográfico** | Geomorfología, Vientos, Paisaje | 3 | **5.46 %** |
+:::
+
+### Escala fundamental de Saaty
+
+Toda comparación pareada usa la **escala 1–9** propuesta por Saaty (1980):
+
+**Tabla 5.** Comparación pareada de Saaty.
+
+::: {.table-responsive}
+| Valor | Interpretación verbal | Significado en este análisis |
+|:---:|---|---|
+| **1** | Igual importancia | Las dos variables limitan el cultivo de forma equivalente |
+| **2** | Importancia intermedia entre 1 y 3 | Ligera preferencia |
+| **3** | Importancia moderada | Una variable es algo más determinante que la otra |
+| **4** | Intermedia entre 3 y 5 | — |
+| **5** | Importancia fuerte | Una variable es claramente más determinante |
+| **7** | Importancia muy fuerte / demostrada | La diferencia es evidente y sustentada en literatura agronómica |
+| **9** | Importancia extrema | Una variable domina casi absolutamente a la otra |
+:::
+
+Los valores pares (2, 4, 6, 8) son juicios intermedios, cuando la variable de la fila es menos importante que la de la columna, se usa el recíproco (ej. si "Uso actual" (fila) es moderadamente menos importante que "T. Prom" (columna), la celda vale 1/3 = 0.333…). Esta es la razón por la que la matriz es recíproca: la celda $(j,i)$ siempre es $1/\text{celda}(i,j)$, y la diagonal siempre vale 1 (una variable comparada consigo misma es igual de importante que ella misma).
+
+### Construcción de la matriz de comparación pareada
+
+Con la jerarquía y la escala definidas, se compara cada par de variables; el resultado es la matriz recíproca 15×15 que aparece en la hoja de cálculo (los valores fila > 1 indican que la variable de la fila domina a la de la columna; los valores < 1 son los recíprocos):
+
+**Tabla 6.** Matriz de comparación pareada con las variables determinadas para el proyecto.
+
+::: {.table-responsive}
+| | T.Prom | Alt | Hel | Uso act. | Pcp. | Hum.R | Prof. | Text. | Fert. | H.sol | Acid. | Geo. | Vi. | Pai. | Eto |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|**T. Prom**|1|1|2|3|3|3|4|4|5|5|5|7|7|9|9|
+|**Alt**|1|1|2|3|3|3|4|4|5|5|5|7|7|9|9|
+|**Hel**|0.5|0.5|1|2|2|2|3|3|4|4|4|5|5|7|7|
+|**Uso act**|0.333|0.333|0.5|1|1|1|2|2|3|3|3|4|5|6|6|
+|**Pcp**|0.333|0.333|0.5|1|1|1|2|2|2|3|3|4|4|5|5|
+|**Hum.R**|0.333|0.333|0.5|1|1|1|2|2|2|3|3|4|4|5|5|
+|**Prof.**|0.25|0.25|0.333|0.5|0.5|0.5|1|1|2|2|2|3|3|4|4|
+|**Text.**|0.25|0.25|0.333|0.5|0.5|0.5|1|1|2|2|2|3|3|4|4|
+|**Fert.**|0.2|0.2|0.25|0.333|0.5|0.5|0.5|0.5|1|1|1|2|2|3|3|
+|**H. sol**|0.2|0.2|0.25|0.333|0.333|0.333|0.5|0.5|1|1|1|2|2|3|3|
+|**Acid.**|0.2|0.2|0.25|0.333|0.333|0.333|0.5|0.5|1|1|1|2|2|3|3|
+|**Geo.**|0.143|0.143|0.2|0.25|0.25|0.25|0.333|0.333|0.333|0.5|0.5|1|1|2|2|
+|**Vi.**|0.143|0.143|0.2|0.2|0.25|0.25|0.333|0.333|0.333|0.5|0.5|1|1|2|2|
+|**Pai.**|0.111|0.111|0.143|0.167|0.2|0.2|0.25|0.25|0.25|0.333|0.333|0.5|0.5|1|1|
+|**Eto**|0.111|0.111|0.143|0.167|0.2|0.2|0.25|0.25|0.25|0.333|0.333|0.5|0.5|1|1|
+:::
+
+**Cómo leer una fila:** la fila "T. Prom" tiene un 9 en la columna "Paisaje". Esto se lee: *"la temperatura promedio tiene una importancia extrema frente al paisaje"* para determinar la aptitud del territorio. Por reciprocidad, la fila "Paisaje" tiene 1/9 = 0.111 en la columna "T. Prom": el paisaje es extremadamente menos determinante que la temperatura.
+
+**Lógica de asignación de valores:**
+
+1. Se ordenan mentalmente las variables de mayor a menor importancia biofísica: Temperatura ≈ Altitud > Heladas > Uso actual > Precipitación ≈ Humedad Relativa > Profundidad ≈ Textura > Fertilidad > Horas sol ≈ Acidez > Geomorfología ≈ Vientos > Paisaje ≈ Evapotranspiración.
+
+2. La magnitud del valor Saaty (1, 3, 5, 7, 9) refleja cuántos "escalones" de esa jerarquía separan a las dos variables comparadas, no una medida física directa.
+
+3. Las variables consideradas equivalentes en importancia (p. ej. Temperatura y Altitud, o Textura y Profundidad) reciben 1 entre sí, aunque ambas puedan tener valores altos frente a variables de otros grupos.
+
+### Suma de columnas 
+
+El primer cálculo mecánico es sumar cada columna de la matriz original (no la transpuesta). Esta suma es el factor de normalización de esa columna:
+
+**Tabla 7.** Suma de columnas 
+
+::: {.table-responsive}
+| Columna | Suma |
+|---|---:|
+| T. Prom | 5.107937 |
+| Altitud | 5.107937 |
+| Heladas | 8.602381 |
+| Uso actual | 13.783333 |
+| Precipitación | 14.066667 |
+| Humedad R | 14.066667 |
+| Profundidad | 21.666667 |
+| Textura | 21.666667 |
+| Fertilidad | 28.166667 |
+| Horas sol | 32.666667 |
+| Acidez | 32.666667 |
+| Geomorfología | 47.000000 |
+| Vientos | 48.000000 |
+| Paisaje | 65.000000 |
+| Eto | 65.000000 |
+:::
+
+Las columnas de las variables más importantes (T. Prom, Altitud) tienen las sumas más bajas (~5.1), porque la mayoría de las demás filas les asignaron valores recíprocos pequeños (0.11–0.5). Las columnas de las variables menos importantes (Paisaje, Eto) tienen sumas altas (65), porque casi todas las demás variables les asignaron valores Saaty grandes (5, 7, 9). Este comportamiento inverso es exactamente lo que permite que, tras la normalización, emerja un vector de pesos coherente.
+
+### Normalización de la matriz
+
+Cada celda de la matriz se divide entre la suma de **su propia columna**:
+
+$$
+a_{ij}^{\text{norm}} = \frac{a_{ij}}{\displaystyle\sum_{k=1}^{n} a_{kj}}
+$$
+
+**Ejemplo numérico** (celda T. Prom × T. Prom):
+
+$$
+a_{11}^{\text{norm}} = \frac{1}{5.107937} = 0.195774
+$$
+
+**Ejemplo con Heladas × Uso actual:**
+
+$$
+a_{34}^{\text{norm}} = \frac{2}{13.783333} = 0.145102
+$$
+
+Al hacer esto para las 225 celdas, cada columna de la matriz normalizada suma exactamente 1.0. Esto es lo que permite el siguiente paso: comparar de forma justa el "peso relativo" de una variable dentro de cada comparación, sin que las columnas con valores originales muy dispares (5.1 vs. 65) distorsionen el resultado.
+
+### Vector de prioridades (los pesos AHP)
+
+El peso final de cada variable es el promedio aritmético de su fila en la matriz ya normalizada:
+
+$$
+w_i = \frac{1}{n} \sum_{j=1}^{n} a_{ij}^{\text{norm}}
+$$
+
+Aplicando el mismo procedimiento a las 15 filas se obtiene el vector de pesos definitivo, como se muestra en la Tabla 8.  
+
+**Tabla 8.** Pesos determinados para las variables de acuerdo a la evaluación multicriterio. 
+
+| Variable | Peso (decimal) | Peso (%) |
+|---|:---:|:---:|
+| Temperatura promedio | 0.179520 | 17.95 % |
+| Altitud | 0.179520 | 17.95 % |
+| Riesgo de heladas | 0.122083 | 12.21 % |
+| Uso actual | 0.083470 | 8.35 % |
+| Precipitación | 0.077663 | 7.77 % |
+| Humedad relativa | 0.077663 | 7.77 % |
+| Profundidad del suelo | 0.051945 | 5.19 % |
+| Textura de suelos | 0.051945 | 5.19 % |
+| Fertilidad natural | 0.043744 | 4.37 % |
+| Horas sol | 0.032040 | 3.20 % |
+| Acidez (pH) | 0.032040 | 3.20 % |
+| Geomorfología | 0.020649 | 2.06 % |
+| Vientos | 0.020407 | 2.04 % |
+| Paisaje | 0.013655 | 1.37 % |
+| Evapotranspiración (Eto) | 0.013655 | 1.37 % |
+| **Suma total** | **1.000000** | **100 %** |
+
+
+
+### Verificación de consistencia 
+
+Comparar 15 variables entre sí implica $\binom{15}{2} = 105$ juicios independientes. Es humanamente fácil caer en contradicciones (p. ej. decir que A > B, B > C, pero luego C > A). El AHP incluye un mecanismo matemático para medir qué tan inconsistente fue el conjunto de comparaciones, y decide si el resultado es confiable o debe rehacerse.
+
+#### Máximo valor propio (λmax)
+
+Se multiplica la matriz original (no la normalizada) por el vector de pesos ($A \times w$), y se calcula el promedio de los cocientes entre cada componente resultante y su peso correspondiente:
+
+$$
+\lambda_{\max} = \frac{1}{n}\sum_{i=1}^{n}\frac{(A \cdot w)_i}{w_i}
+$$
+
+Para esta matriz: **λmax = 15.638719**
+
+Si el juicio fuera perfectamente consistente, λmax sería exactamente igual a $n$ = 15. La diferencia (0.6387) es la que se traduce en el índice de consistencia.
+
+#### Índice de Consistencia (CI)
+
+$$
+CI = \frac{\lambda_{\max}-n}{n-1} = \frac{15.638719 - 15}{14} = 0.045623
+$$
+
+#### Índice Aleatorio (RI) y Razón de Consistencia (CR)
+
+El RI es un valor tabulado por Saaty que representa la inconsistencia promedio de matrices generadas *al azar* del mismo tamaño (n = 15 → RI ≈ 1.59). La Razón de Consistencia (CR) compara el CI observado contra ese valor aleatorio:
+
+$$
+CR = \frac{CI}{RI} = \frac{0.045623}{1.59} \approx 0.0287
+$$
+
+### Regla de decisión
+
+**Tabla 9.** Interpretación de la razón de consistencia. 
+
+::: {.table-responsive}
+ 
+| CR | Interpretación |
+|:---:|---|
+| **CR ≤ 0.10** | Consistencia **aceptable** — los pesos son matemáticamente confiables |
+| **CR > 0.10** | Inconsistencia **inaceptable** — deben revisarse las comparaciones pareadas |
+:::
+
+En este caso CR = 0.0287, muy por debajo del umbral de 0.10. Esto significa que, a pesar de haber realizado 105 comparaciones independientes, el juicio del experto fue altamente coherente: no hay contradicciones lógicas relevantes entre las prioridades asignadas, y el vector de pesos puede usarse con confianza en la WLC.
+
+### Interpretación variable por variable 
+
+Una vez validados los pesos, cada uno se interpreta en función del rol fisiológico que la variable cumple para la gulupa. Esta es la traducción de un número abstracto (0.1795) a una razón agronómica:
+
+#### Grupo climático
+
+- **Temperatura promedio (17.95 %):** factor determinante de la tasa fotosintética, la floración y el cuajado de fruto; fuera del rango 15–20 °C la planta reduce drásticamente su productividad.
+- **Altitud (17.95 %):** en el relieve andino actúa como *proxy* integrado de temperatura, presión atmosférica y presión de plagas/enfermedades; de ahí que reciba el mismo peso que la temperatura.
+- **Riesgo de heladas (12.21 %):** limitante binario y catastrófico — una helada puede matar la planta completa, independientemente de qué tan buenas sean las demás condiciones. Por eso, además de su peso alto, se trata como máscara de exclusión
+- **Precipitación (7.77 %)** y **Humedad relativa (7.77 %):** controlan el balance hídrico y la incidencia de enfermedades fúngicas (roña); reciben el mismo peso porque ambas son manejables parcialmente con riego o ventilación, a diferencia de la temperatura o las heladas.
+- **Horas sol (3.20 %):** estimula la floración, pero su efecto es menor comparado con el estrés térmico.
+- **Evapotranspiración / Eto (1.37 %):** variable secundaria del balance hídrico, redundante en buena parte con precipitación y humedad, de ahí su peso bajo.
+
+#### Grupo edáfico
+
+**Profundidad del suelo (5.19 %)** y **Textura (5.19 %):** determinan drenaje y desarrollo radicular; pesos iguales porque ambas son corregibles con prácticas de manejo (subsolado, enmiendas).
+- **Fertilidad natural (4.37 %):** relevante para reducir costos de fertilización, pero totalmente corregible con insumos.
+- **Acidez / pH (3.20 %):** limitante química fácilmente corregible mediante encalado; por eso su peso es de los más bajos pese a afectar la disponibilidad de nutrientes.
+
+#### Uso actual del suelo (8.34 %)
+
+Actúa como filtro de viabilidad práctica y normativa (no tiene sentido recomendar un área boscosa protegida o urbana), pero no es una limitante fisiológica de la planta en sí, de ahí su peso intermedio entre el grupo climático y el edáfico.
+
+#### Grupo topográfico (5.46 %)
+
+- **Geomorfología (2.06 %)** y **Vientos (2.04 %):** modulan riesgos físicos (encharcamiento, daño mecánico, caída de flores/frutos por viento fuerte).
+- **Paisaje (1.37 %):** variable de contexto regional, la de menor peso individual junto con Eto, porque aporta información redundante con geomorfología y altitud.
+
+### Pesos AHP
+
+Los pesos asignados a cada variable se presentan en la Tabla 9, en la que se añade la jusitificación de la clasificación de acuerdo a la literatura consultada en la que se incluyó la biología floral, enfermedades, limitaciones por estrés abiótico y posibilidad de manejo. En general, la prioridad asignada a las variables de temperatura y altitud se fundamenta en su caracter de factores limitantes para la etapa reproductiva de la gulupa (Ocampo & Wyckhuys, 2012; Pérez & Melgarejo, 2012), por otro lado, variables como el pH o la fertilidad del suelo reciben menor peso al ser modificables mediante el manejo agronómico (Guerrero-López et al., 2012; Ocampo & Wyckhuys, 2012), como se describió anteriormente. 
+
+**Tabla 10.** Peso de cada variable de acuerdo a la metodología planteada.
+
+::: {.table-responsive}
+| Variable | Peso (%) | Peso decimal | Justificación |
 |---|:---:|:---:|---|
-| Temperatura promedio | 12% | 0.12 | Factor principal para crecimiento y floración |
-| Altitud | 12% | 0.12 | Proxy crítico en los Andes para clima y presión de plagas |
-| Riesgo de heladas | 10% | 0.10 | La gulupa es altamente sensible|
-| Uso actual | 9% | 0.09 | Facilidad de establecimiento y normativa de conservación |
-| Precipitación anual | 8% | 0.08 | Vital para el llenado del fruto y balance hídrico |
-| Humedad Relativa | 8% | 0.08 | Controla la incidencia de enfermedades fúngicas como la roña |
-| Profundidad del suelo | 7% | 0.07 | El sistema radicular es superficial pero requiere drenaje |
-| Textura de suelos | 7% | 0.07 | Influye directamente en el drenaje y aireación radicular |
-| Fertilidad natural | 6% | 0.06 | Importante para reducir costos de insumos, requiere alta M.O. |
-| Horas sol | 5% | 0.05 | La luz solar directa estimula las yemas reproductivas |
-| Acidez (pH) | 5% | 0.05 | Afecta la disponibilidad de nutrientes; corregible pero limitante |
-| Geomorfología | 4% | 0.04 | Determina la estabilidad y riesgos de encharcamiento |
-| Vientos | 3% | 0.03 | Pueden causar daños mecánicos y afectar polinizadores |
-| Paisaje | 2% | 0.02 | Contexto regional de conectividad y aptitud general |
-| Evapotranspiración | 2% | 0.02 | Factor secundario en el balance hídrico local |
+| **Temperatura promedio** | 17.95% | 0.1795 | Factor principal para crecimiento y floración |
+| **Altitud** | 17.95% | 0.1795 | Proxy crítico en los Andes para clima y presión de plagas |
+| **Riesgo de heladas** | 12.20% | 0.1220 | La gulupa es altamente sensible; las heladas pueden matar el cultivo |
+| **Uso actual** | 8.34% | 0.0834 | Facilidad de establecimiento y normativa de conservación |
+| **Precipitación anual** | 7.76% | 0.0776 | Vital para el llenado del fruto y balance hídrico |
+| **Humedad Relativa** | 7.76% | 0.0776 | Controla la incidencia de enfermedades fúngicas como la roña |
+| **Profundidad del suelo** | 5.19% | 0.0519 | El sistema radicular es superficial pero requiere drenaje |
+| **Textura de suelos** | 5.19% | 0.0519 | Influye directamente en el drenaje y aireación radicular |
+| **Fertilidad natural** | 4.37% | 0.0437 | Importante para reducir costos de insumos, requiere alta M.O. |
+| **Horas sol** | 3.20% | 0.0320 | La luz solar directa estimula las yemas reproductivas |
+| **Acidez (pH)** | 3.20% | 0.0320 | Afecta la disponibilidad de nutrientes; corregible pero limitante |
+| **Geomorfología** | 2.06% | 0.0206 | Determina la estabilidad y riesgos de encharcamiento |
+| **Vientos** | 2.04% | 0.0204 | Pueden causar daños mecánicos y afectar polinizadores |
+| **Paisaje** | 1.36% | 0.0136 | Contexto regional de conectividad y aptitud general |
+| **Evapotranspiración** | 1.36% | 0.0136 | Factor secundario en el balance hídrico local |
+| **TOTAL** | **100%** | **1.00** | |
+:::
 
+::: {.callout-tip}
+**Verificación**: La suma de todos los pesos debe ser exactamente **1.00**. Comprobación:  
+0.1795 + 0.1795 + 0.1220 + 0.0834 + 0.0776 + 0.0776 + 0.0519 + 0.0519 + 0.0437 + 0.0320 + 0.0320 + 0.0206 + 0.0204 + 0.0136 + 0.0136 = **1.00** ✓
+:::
 
-***Combinación Líneal Ponderada (WLC) en la Calculadora Ráster***
+## Combinación Líneal Ponderada (WLC) en la Calculadora Ráster
 
 La Combinación Lineal Ponderada integra todos los criterios reclasificados mediante:
 
@@ -394,101 +646,26 @@ $$
 \text{Aptitud\_Final} = \sum_{i=1}^{n} w_i \times RC_i
 $$
 
-Donde $w_i$ es el peso AHP del criterio $i$ y $RC_i$ es el raster reclasificado con valores 1–4 de aptitud. Esta expresión fue ajustada en la calculadora raster según los pesos presentados en la Tabla 3. Este proceso también puede ser automatizado como se presenta a continuación: 
+Donde $w_i$ es el peso AHP del criterio $i$ y $RC_i$ es el raster reclasificado con valores 1–4 de aptitud. Esta expresión fue ajustada en la calculadora raster según los pesos presentados en la Tabla 8. 
 
-```python
-#| label: combinacion_wlc_python
-#| eval: false
+## Clasificación Final de Aptitud
 
-import numpy as np
-import rasterio
-import os
+El raster resultante fue clasificado en cuatro categorías estándar de acuerdo a los umbrales presentados en la Tabla 9.
 
-# -------------------------------------------------------
-# PESOS AHP (deben sumar exactamente 1.0)
-# -------------------------------------------------------
-pesos = {
-    "RC_Temperatura.tif":       0.12,
-    "RC_Altitud.tif":           0.12,
-    "RC_Heladas.tif":           0.10,
-    "RC_UsoActual.tif":         0.09,
-    "RC_Precipitacion.tif":     0.08,
-    "RC_HumedadRelativa.tif":   0.08,
-    "RC_Profundidad.tif":       0.07,
-    "RC_Textura.tif":           0.07,
-    "RC_Fertilidad.tif":        0.06,
-    "RC_HorasSol.tif":          0.05,
-    "RC_pH.tif":                0.05,
-    "RC_Geomorfologia.tif":     0.04,
-    "RC_Vientos.tif":           0.03,
-    "RC_Paisaje.tif":           0.02,
-    "RC_Evapotranspiracion.tif": 0.02
-}
+**Tabla 11.** Umbrales de clasificación para el mapa final de aptitud**
 
-# Verificar que los pesos sumen 1.0
-suma_pesos = sum(pesos.values())
-assert abs(suma_pesos - 1.0) < 0.001, f"ERROR: Los pesos suman {suma_pesos:.4f}, deben sumar 1.0"
-print(f"Verificación de pesos: suma = {suma_pesos:.4f} ✓")
-
-# -------------------------------------------------------
-# COMBINACIÓN LINEAL PONDERADA
-# -------------------------------------------------------
-dir_rc = "capas_reclasificadas/"
-ruta_salida = "Aptitud_Gulupa_Ipiales_WLC.tif"
-
-# Leer el primer raster para obtener perfil de referencia
-primer_archivo = list(pesos.keys())[0]
-with rasterio.open(dir_rc + primer_archivo) as src_ref:
-    perfil = src_ref.profile.copy()
-    forma = src_ref.read(1).shape
-    nodata_val = -9999
-
-# Inicializar acumulador
-aptitud_acumulada = np.zeros(forma, dtype=np.float32)
-mascara_nodata = np.zeros(forma, dtype=bool)
-
-for nombre_archivo, peso in pesos.items():
-    ruta_capa = dir_rc + nombre_archivo
-    with rasterio.open(ruta_capa) as src:
-        capa = src.read(1).astype(np.float32)
-        nd = src.nodata if src.nodata is not None else -9999
-        
-        # Identificar y acumular celdas nodata
-        mascara_nd_capa = (capa == nd) | np.isnan(capa)
-        mascara_nodata |= mascara_nd_capa
-        
-        # Reemplazar nodata por 0 para la suma (se excluirán al final)
-        capa[mascara_nd_capa] = 0
-        
-        # Acumular combinación ponderada
-        aptitud_acumulada += capa * peso
-    
-    print(f"  Sumada: {nombre_archivo} (peso: {peso:.2f})")
-
-# Restaurar NoData en zonas sin datos
-aptitud_acumulada[mascara_nodata] = nodata_val
-
-# Guardar resultado
-perfil.update(dtype="float32", nodata=nodata_val, count=1)
-with rasterio.open(ruta_salida, "w", **perfil) as dst:
-    dst.write(aptitud_acumulada, 1)
-
-print(f"\nMapa WLC guardado en: {ruta_salida}")
-print(f"Rango de valores (sin NoData): {aptitud_acumulada[~mascara_nodata].min():.2f} – "
-      f"{aptitud_acumulada[~mascara_nodata].max():.2f}")
-```
-***Clasificación Final de Aptitud***
-
-El raster resultante fue clasificado en cuatro categorías estándar de acuerdo a los umbrales presentados en la Tabla 4.
-
-**Tabla 4.** Umbrales de clasificación para el mapa final de aptitud**
+::: {.table-responsive}
 
 | Valor WLC | Categoría UPRA | Descripción |
 |:---:|---|---|
-| **3.5 – 4.0** | **A1** — Aptitud Alta | Condiciones óptimas para el cultivo comercial de gulupa |
-| **2.5 – 3.49** | **A2** — Aptitud Media | Condiciones favorables con limitaciones menores manejables |
-| **1.5 – 2.49** | **A3** — Aptitud Baja | Condiciones con limitaciones importantes; requiere inversión |
-| **1.0 – 1.49** | **N** — No Apto | Condiciones excluyentes o incompatibles con el cultivo |
+| **4.5000 – 4.9997** | **A1** — Aptitud muy alta | Condiciones óptimas para el cultivo comercial de gulupa |
+| **3.8000 – 4.5000** | **A2** — Aptitud Alta | Condiciones favorables con limitaciones menores manejables |
+| **3.0000 – 3.8000** | **A3** — Aptitud Media | Condiciones con limitaciones importantes; requiere inversión |
+| **2.4897 – 3.0000** | **N** — Aptitud Baja / No Apta | Condiciones excluyentes o incompatibles con el cultivo |
+
+:::
+
+### Reclasificación del resultado final
 
 ```python
 #| label: clasificacion_final
@@ -531,11 +708,13 @@ for clase, etiqueta in sorted(etiquetas.items(), reverse=True):
 print(f"\nMapa final guardado: {ruta_final}")
 ```
 
-***Validación y Composición Cartográfica***
+## Validación y Composición Cartográfica
 
-Para evaluar de forma integral la aptitud, fue necesario excluir coberturas de acuerdo al uso del suelo independientemente del puntaje WLC (Tabla 5) utilizando una máscara de exclusión. 
+Para evaluar de forma integral la aptitud, fue necesario excluir coberturas de acuerdo al uso del suelo independientemente del puntaje WLC (Tabla 10) utilizando una máscara de exclusión. 
 
-**Tabla 5.** Zonas de exclusión debido al uso o cobertura del suelo. 
+**Tabla 12.** Zonas de exclusión debido al uso o cobertura del suelo. 
+
+::: {.table-responsive}
 
 | Cobertura / Condición | Justificación |
 |---|---|
@@ -545,7 +724,7 @@ Para evaluar de forma integral la aptitud, fue necesario excluir coberturas de a
 | Áreas SINAP / RUNAP | Restricción legal |
 | Riesgo de heladas alto/frecuente | Restricción climática inapelable |
 | Zonas de movimientos en masa activos (SGC) | Restricción de amenaza natural |
-
+:::
 
 ```python
 #| label: mascara_exclusion
@@ -575,7 +754,7 @@ with rasterio.open(ruta_enmascarado, "w", **perfil) as dst:
 print("Máscara de exclusión aplicada.")
 ```
 
-***Estadísticas de área y exportación de tabla***
+## Estadísticas de área y exportación de tabla
 
 ```python
 #| label: estadisticas_area
@@ -616,7 +795,7 @@ df.to_csv("tabla_aptitud_gulupa_ipiales.csv", index=False)
 print("\nTabla exportada a: tabla_aptitud_gulupa_ipiales.csv")
 ```
 
-***Consideraciones Metodológicas y Limitaciones***
+# Consideraciones Metodológicas y Limitaciones
 
 1. **Escala de trabajo**: El análisis es apropiado para escala 1:25.000 – 1:50.000. Para toma de decisiones prediales se requiere mayor resolución. La escala manejada es adecuada debido al área de estudio limitada al municipio de Ipiales. 
 
@@ -634,33 +813,35 @@ Dentro de las variables consideradas en el modelo, la delimitación de zonas buf
 
 De acuerdo con la metodología AHP, las variables con mayor influencia sobre la aptitud territorial fueron la temperatura (Figura 2) y la altitud (Figura 3). Estos factores determinan el tiempo térmico necesario para completar las etapas fenológicas, además de influir directamente sobre la viabilidad reproductiva y la calidad final del fruto (Pérez & Melgarejo, 2012; Salazar-Gutiérrez et al., 2013). En tercer lugar se ubicó el riesgo de heladas (Figura 4), debido a la alta sensibilidad de la especie a las bajas temperaturas, las cuales pueden retrasar el crecimiento vegetativo y prolongar el tiempo requerido para alcanzar la cosecha.
 
-![](Temperatura.jpg)
-**Figura 2.**Temperatura promedio en Ipiales, Nariño
+![Temperatura Ipiales](images/Temperatura.jpg)
+**Figura 2.**Temperatura promedio en el municipio de Ipiales, Nariño
 
-![](Altura.jpg)
+![ALtitud Ipiales](images/Altura.jpg)
 **Figura 3.** Altitud de Ipiales, Nariño.
 
-
-![Heladas](Heladas.jpg)
+![Heladas Ipiales](images/Heladas.jpg)
 **Figura 4.** Riesgo de heladas en Ipiales, Nariño. 
 
-La integración de las variables evaluadas mediante el modelo de Evaluación Multicriterio (AHP) permitió identificar tres categorías de aptitud para el establecimiento del cultivo de gulupa en el municipio de Ipiales (Figura 5). Del área total analizada, el 36.56 % correspondió a áreas de aptitud alta, el 37.84 % a aptitud media y el 25.59 % a aptitud baja (Tabla 6), este análisis excluyendo centros poblados, cuerpos de agua, infraestructura vial, zonas de protección y coberturas incompatibles con el cultivo. 
+La integración de las variables evaluadas mediante el modelo de Evaluación Multicriterio (AHP) permitió identificar tres categorías de aptitud para el establecimiento del cultivo de gulupa en el municipio de Ipiales (Figura 5). Del área total analizada, el 35.26% correspondió a áreas de aptitud baja, el 33.93% a aptitud media, el 27.57 % a aptitud alta y el 3.14% a aptitud muy alta (Tabla 13), este análisis excluyendo centros poblados, cuerpos de agua, infraestructura vial, zonas de protección y coberturas incompatibles con el cultivo.**
 
-**Tabla 6.** Área clasificada en categorías de aptitud. 
+**Tabla 13.** Área clasificada en categorías de aptitud. 
 
 | Categoría de aptitud | Área (ha) | Porcentaje (%) |
-|---------------------|----------:|---------------:|
-| Aptitud baja | 35.06 | 25.59 |
-| Aptitud media | 51.84 | 37.84 |
-| Aptitud alta | 50.08 | 36.56 |
-| Total | 136.98 | 100.00 |
+|----------------------|----------:|---------------:|
+| Aptitud baja         | 48.30 | 35.26 |
+| Aptitud media        | 46.47 | 33.93 |
+| Aptitud alta         | 37.90 | 27.67 |
+| Aptitud muy alta     | 4.30  | 3.14  |
+| **Total**            | **136.98** | **100.00** |
 
-Las áreas de aptitud alta se localizan principalmente en el sector norte del municipio, comprendiendo las veredas de San Antonio, La Providencia, Santa Lucía, Mirador, San Luis, Las Ánimas, Versalles y La Playa. Adicionalmente, se identificaron sectores favorables en el corredor sur y suroriental, particularmente en las veredas Los Alpes y Lucitamba. Estas zonas presentan una combinación favorable de temperatura, altitud y bajo riesgo de heladas, variables que obtuvieron los mayores pesos dentro del modelo AHP y que son determinantes para el desarrollo fisiológico y reproductivo de la gulupa.
+Como se muestra en la Figura 5, las áreas de aptitud alta y muy alta se localizan principalmente en la parte central del municipio, especialmente en el corregimiento de Cofaína Jardín de Sucumbios, en donde se presenta una combinación favorable de temperatura, altitud y bajo riesgo de heladas, variables que obtuvieron los mayores pesos dentro del modelo AHP y que son determinantes para el desarrollo fisiológico y reproductivo de la gulupa. En cuanto a zonas de aptitud media, se concentran hacia la parte sur occidental del municipio, lo que incluye la cabecera municipal de Ipiales, zonas altamente comerciales y en las que se ubican las veredas de San Antonio, La Providencia, Santa Lucía, Mirador, San Luis, Las Ánimas, Versalles y La Playa.
 
-![Mapa de aptitud](Aptitud_Final.jpg)
+Por otra parte, las áreas de aptitud baja se presentan en la zona de páramo, que tiene rangos altitudinales de hasta 3.900 msnm, lo que es negativo para el cultivo de gulupa, además de presentar las temperaturas mínimas más bajas y el mayor riesgo de heladas. Además, hacia la veredas Lucitania, Cartagena y Puerto Bello se presentan restricciones por la presencia de cuerpos de agua y las altitudes menores a 500 msnm, teniendo en cuenta los rangos adecuados reportados en la Tabla 2 (zonas no apatas menores a 1400 msnm). Estudios previos han señalado que las variaciones en temperatura y altitud afectan directamente la duración de las etapas fenológicas, la viabilidad del polen y la productividad del cultivo (Guerrero-López et al., 2012; Pérez & Melgarejo, 2012; Salazar-Gutiérrez et al., 2013; Vela Hernández, 2024).
+
+![Mapa de aptitud](images/aptitud_corregida.jpeg)
 **Figura 5.** Aptitud para el establecimiento del cultivo de gulupa en Ipiales, Nariño. 
 
-La distribución espacial observada coincide con los requerimientos agroecológicos reportados para la especie. Las áreas clasificadas como altamente aptas se encuentran asociadas a temperaturas moderadas y rangos altitudinales que favorecen la floración, el cuajamiento de frutos y el desarrollo vegetativo. Por el contrario, las zonas de aptitud baja se concentran principalmente hacia el sur del municipio, donde las condiciones térmicas y el riesgo de heladas representan mayores limitaciones para el establecimiento del cultivo. Estudios previos han señalado que las variaciones en temperatura y altitud afectan directamente la duración de las etapas fenológicas, la viabilidad del polen y la productividad del cultivo (Guerrero-López et al., 2012; Pérez & Melgarejo, 2012; Salazar-Gutiérrez et al., 2013; Vela Hernández, 2024).
+La distribución espacial observada coincide con los requerimientos agroecológicos reportados para la especie. Las áreas clasificadas como altamente aptas se encuentran asociadas a temperaturas moderadas y rangos altitudinales que favorecen la floración, el cuajamiento de frutos y el desarrollo vegetativo. 
 
 Otro factor relevante corresponde al riesgo de heladas, las zonas clasificadas como altamente aptas presentan una menor probabilidad de ocurrencia de temperaturas mínimas críticas, reduciendo el riesgo de daños en tejidos vegetales, retrasos en el crecimiento y pérdidas de productividad (Guerrero-López et al., 2012). Debido a la alta sensibilidad de la gulupa a este fenómeno, la ausencia de eventos frecuentes de heladas constituye una ventaja importante para el establecimiento de plantaciones comerciales.
 
@@ -670,16 +851,15 @@ En conjunto, los resultados indican que las condiciones climáticas constituyen 
 
 Los resultados obtenidos son consistentes con investigaciones realizadas en otros contextos geográficos donde la temperatura, la topografía y las características del suelo han sido identificadas como factores determinantes en la evaluación de aptitud agrícola. Hussain et al. (2024), en Pakistán, encontraron que la combinación de variables climáticas y edáficas permitió identificar áreas con alta aptitud para la expansión agrícola sostenible. De manera similar, Abuzaid y El-Husseiny (2022) reportaron en Egipto que la disponibilidad hídrica y las condiciones climáticas constituyen factores críticos para la aptitud productiva, mientras que Akıncı et al. (2013) señalaron en Turquía que las variables topográficas y edáficas tienen una influencia significativa en la delimitación de áreas agrícolas potenciales. Aunque estos estudios se desarrollaron en condiciones agroecológicas distintas, coinciden en destacar la utilidad de la integración entre SIG y AHP para la planificación territorial agrícola.
 
-Aunque los resultados permiten identificar áreas con potencial para el establecimiento de gulupa, estos dependen de la calidad y resolución de la información espacial utilizada. Por ello, se recomienda complementar los resultados con verificaciones de campo y estudios detallados de suelos y clima que permitan validar las zonas identificadas como altamente aptas. Además, es necesario reconocer las limitaciones de las fuentes de información de datos climáticos y del suelo debido a falta de actualización o la no disponibilidad de bases meteorológicas en la zona de estudio. 
+Aunque los resultados permiten identificar áreas con potencial para el establecimiento de gulupa, estos dependen de la calidad y resolución de la información espacial utilizada. Por ello, se recomienda complementar los resultados con verificaciones de campo y estudios detallados de suelos y clima que permitan validar las zonas identificadas como altamente aptas. Además, es necesario reconocer las limitaciones de las fuentes de información de datos climáticos y del suelo debido a falta de actualización y a la limitada disponibilidad de estaciones meteorológicas en la zona de estudio. 
 
 # Conclusiones
 
-La integración de Sistemas de Información Geográfica (SIG) y el Proceso de Jerarquía Analítica (AHP) permitió identificar áreas con diferentes niveles de aptitud para el establecimiento del cultivo de gulupa en el municipio de Ipiales, Nariño. Mediante la evaluación conjunta de variables climáticas, edáficas, topográficas y de accesibilidad, se determinó que el 36,56 % del área evaluada presenta aptitud alta y el 37,84 % aptitud media, evidenciando la existencia de zonas con condiciones favorables para la expansión del cultivo.
+La integración de Sistemas de Información Geográfica (SIG) y el Proceso de Jerarquía Analítica (AHP) permitió identificar áreas con diferentes niveles de aptitud para el establecimiento del cultivo de gulupa en el municipio de Ipiales, Nariño. Mediante la evaluación conjunta de variables climáticas, edáficas, topográficas y de accesibilidad, se determinó que el 3.14% del área presenta aptitud muy alta, el 27,57% aptitud alta y el 33,93 % aptitud media, evidenciando la existencia de zonas con condiciones favorables para la expansión del cultivo en el 65% del área evaluada del municipio de Ipiales. 
 
 El análisis multicriterio permitió establecer que la temperatura, la altitud y el riesgo de heladas constituyen las variables más determinantes para la aptitud territorial de la gulupa, debido a su influencia sobre la floración, el cuajamiento de frutos, la calidad de la producción y el desarrollo fenológico del cultivo. A diferencia de otros factores, estas variables presentan una limitada capacidad de manejo agronómico, por lo que representan los principales criterios para la selección de nuevas áreas productivas.
 
-Las zonas con mayor aptitud se localizaron principalmente en el sector norte del municipio y en algunos sectores de los corredores sur y suroriental, donde convergen condiciones climáticas favorables y un menor riesgo de eventos limitantes. En este sentido, el mapa de aptitud generado constituye una herramienta de apoyo para la planificación territorial y la toma de decisiones productivas, contribuyendo a orientar futuras inversiones y promover una expansión sostenible del cultivo de gulupa en el municipio de Ipiales.
-
+Las zonas con mayor aptitud se localizaron principalmente en la zona central del municipio, donde convergen condiciones climáticas favorables y un menor riesgo de eventos limitantes. En este sentido, el mapa de aptitud generado constituye una herramienta de apoyo para la planificación territorial y la toma de decisiones productivas, contribuyendo a orientar futuras inversiones y promover una expansión sostenible del cultivo de gulupa en el municipio de Ipiales.
 
 # Referencias Bibliográficas
 
